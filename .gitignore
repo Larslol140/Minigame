@@ -1,0 +1,12 @@
+# QT
+*.user
+*.moc
+moc_*
+*.o
+.qmake.stash
+*.png
+Makefile
+
+# Project
+minigame
+data.db
