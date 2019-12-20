@@ -6,7 +6,7 @@ CREATE TABLE card (
 );
 
 CREATE TABLE monster (
-	monster_id INTEGER AUTONCREMENT PRIMARY KEY,
+	monster_id INTEGER PRIMARY KEY AUTOINCREMENT,
 	monster_name VARCHAR(64) NOT NULL,
 	monster_attack INTEGER NOT NULL,
 	monster_health INTEGER NOT NULL
