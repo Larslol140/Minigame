@@ -34,6 +34,8 @@ class View : public QWidget
     bool isPlayerCard(const QPoint &pos);
     bool isMonsterCard(const QPoint &pos);
 
+    void unselectAllCards();
+
   public:
     View(QWidget *parent = nullptr);
     ~View();

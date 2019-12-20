@@ -95,6 +95,7 @@ void Model::selectNoMonsterCard()
 
 void Model::playerTurn()
 {
+  if (isGameFinished()) return;
   if (player->isCardSelected())
   {
     attackMonster();
@@ -106,6 +107,7 @@ void Model::playerTurn()
 
 void Model::monsterTurn()
 {
+  if (isGameFinished()) return;
   if (monster->isCardSelected())
   {
     attackPlayer();
@@ -152,6 +154,11 @@ void Model::monsterAutoTurn()
   else
     monster->selectCard(monster->getCard2());
   monsterTurn();
+}
+
+bool Model::isGameFinished()
+{
+  return !(isPlayerAlive() && isMonsterAlive());
 }
 
 Model *Model::getInstance(QObject *parent)

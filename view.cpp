@@ -2,7 +2,8 @@
 
 void View::selectPlayerCard(const QPoint &point)
 {
-  if (PLAYER_CARD_LEFT.contains(point))
+  if ( model->isGameFinished() ) return;
+  else if (PLAYER_CARD_LEFT.contains(point))
     model->selectLeftPlayerCard();
   else if (PLAYER_CARD_RIGHT.contains(point))
     model->selectRightPlayerCard();
@@ -10,10 +11,17 @@ void View::selectPlayerCard(const QPoint &point)
 
 void View::selectMonsterCard(const QPoint &point)
 {
-  if (MONSTER_CARD_LEFT.contains(point))
+  if ( model->isGameFinished() ) return;
+  else if (MONSTER_CARD_LEFT.contains(point))
     model->selectLeftMonsterCard();
   else if (MONSTER_CARD_RIGHT.contains(point))
     model->selectRightMonsterCard();
+}
+
+void View::unselectAllCards()
+{
+  model->getPlayer()->selectCard(nullptr);
+  model->getMonster()->selectCard(nullptr);
 }
 
 void View::playSelectedCards()
@@ -22,11 +30,7 @@ void View::playSelectedCards()
     model->playerTurn();
   else if (model->getMonster()->isCardSelected())
     model->monsterTurn();
-  else
-  {
-    model->getPlayer()->selectCard(nullptr);
-    model->getMonster()->selectCard(nullptr);
-  }
+  unselectAllCards();
 }
 
 void View::drawMonsterElements(QPainter &painter)

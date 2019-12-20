@@ -26,6 +26,7 @@ class Model : public QObject
 
     void    monsterAutoTurn();
 
+
   public:
     static Model *getInstance(QObject *parent = nullptr);
     ~Model();
@@ -34,6 +35,7 @@ class Model : public QObject
     void endGame();
 
     void restartGame(int player_id, int monster_id);
+    bool isGameFinished();
 
     void selectLeftPlayerCard();
     void selectRightPlayerCard();
