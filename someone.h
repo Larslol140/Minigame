@@ -12,8 +12,8 @@ class Someone
     int         attack;
     QString     name;
 
-    Card        *card1;
-    Card        *card2;
+    Card        *leftCard;
+    Card        *rightCard;
 
     Card        *selectedCard;
 
@@ -32,8 +32,8 @@ class Someone
 
     QString   getHealthText();
 
-    Card      *getCard1();
-    Card      *getCard2();
+    Card      *getLeftCard();
+    Card      *getRightCard();
     Card      *getSelectedCard();
     bool      isCardSelected();
 

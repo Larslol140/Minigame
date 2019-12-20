@@ -26,6 +26,12 @@ class View : public QWidget
     void drawNewGame(QPainter &painter);
     bool isInNewGameRegion(const QPoint &point);
 
+    bool isPointInLeftPlayerCard(const QPoint &point);
+    bool isPointInRightPlayerCard(const QPoint &point);
+
+    bool isPointInLeftMonsterCard(const QPoint &point);
+    bool isPointInRightMonsterCard(const QPoint &point);
+
     QColor getCardColor(Card *card);
 
     void resetToDefaultColor(QPainter &painter);

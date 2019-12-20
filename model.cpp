@@ -65,12 +65,12 @@ void Model::restartGame(int player_id, int monster_id)
 
 void Model::selectLeftPlayerCard()
 {
-  player->selectCard(player->getCard1());
+  player->selectCard(player->getLeftCard());
 }
 
 void Model::selectRightPlayerCard()
 {
-  player->selectCard(player->getCard2());
+  player->selectCard(player->getRightCard());
 }
 
 void Model::selectNoPlayerCard()
@@ -80,12 +80,12 @@ void Model::selectNoPlayerCard()
 
 void Model::selectLeftMonsterCard()
 {
-  monster->selectCard(monster->getCard1());
+  monster->selectCard(monster->getLeftCard());
 }
 
 void Model::selectRightMonsterCard()
 {
-  monster->selectCard(monster->getCard2());
+  monster->selectCard(monster->getRightCard());
 }
 
 void Model::selectNoMonsterCard()
@@ -150,9 +150,9 @@ void Model::healMonster()
 void Model::monsterAutoTurn()
 {
   if ( rand() % 1 == 0 )
-    monster->selectCard(monster->getCard1());
+    monster->selectCard(monster->getLeftCard());
   else
-    monster->selectCard(monster->getCard2());
+    monster->selectCard(monster->getRightCard());
   monsterTurn();
 }
 

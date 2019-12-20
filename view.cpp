@@ -3,18 +3,18 @@
 void View::selectPlayerCard(const QPoint &point)
 {
   if ( model->isGameFinished() ) return;
-  else if (PLAYER_CARD_LEFT.contains(point))
+  else if (isPointInLeftPlayerCard(point))
     model->selectLeftPlayerCard();
-  else if (PLAYER_CARD_RIGHT.contains(point))
+  else if (isPointInRightPlayerCard(point))
     model->selectRightPlayerCard();
 }
 
 void View::selectMonsterCard(const QPoint &point)
 {
   if ( model->isGameFinished() ) return;
-  else if (MONSTER_CARD_LEFT.contains(point))
+  else if (isPointInLeftMonsterCard(point))
     model->selectLeftMonsterCard();
-  else if (MONSTER_CARD_RIGHT.contains(point))
+  else if (isPointInRightMonsterCard(point))
     model->selectRightMonsterCard();
 }
 
@@ -36,15 +36,15 @@ void View::playSelectedCards()
 void View::drawMonsterElements(QPainter &painter)
 {
   drawMonsterStatusBar(painter, model->getMonster());
-  drawCard(painter, MONSTER_CARD_LEFT, model->getMonster()->getCard1());
-  drawCard(painter, MONSTER_CARD_RIGHT, model->getMonster()->getCard2());
+  drawCard(painter, MONSTER_CARD_LEFT, model->getMonster()->getLeftCard());
+  drawCard(painter, MONSTER_CARD_RIGHT, model->getMonster()->getRightCard());
 }
 
 void View::drawPlayerElements(QPainter &painter)
 {
   drawPlayerStatusBar(painter, model->getPlayer());
-  drawCard(painter, PLAYER_CARD_LEFT, model->getPlayer()->getCard1());
-  drawCard(painter, PLAYER_CARD_RIGHT, model->getPlayer()->getCard2());
+  drawCard(painter, PLAYER_CARD_LEFT, model->getPlayer()->getLeftCard());
+  drawCard(painter, PLAYER_CARD_RIGHT, model->getPlayer()->getRightCard());
 }
 
 void View::drawCard(QPainter &painter, QRect rect, Card *card)
@@ -90,6 +90,26 @@ void View::drawNewGame(QPainter &painter)
 bool View::isInNewGameRegion(const QPoint &point)
 {
   return START_NEW_GAME.contains(point);
+}
+
+bool View::isPointInLeftPlayerCard(const QPoint &point)
+{
+  return PLAYER_CARD_LEFT.contains(point);
+}
+
+bool View::isPointInRightPlayerCard(const QPoint &point)
+{
+  return PLAYER_CARD_RIGHT.contains(point);
+}
+
+bool View::isPointInLeftMonsterCard(const QPoint &point)
+{
+  return MONSTER_CARD_LEFT.contains(point);
+}
+
+bool View::isPointInRightMonsterCard(const QPoint &point)
+{
+  return MONSTER_CARD_RIGHT.contains(point);
 }
 
 QColor View::getCardColor(Card *card)

@@ -2,18 +2,18 @@
 
 void Someone::clearCards()
 {
-  delete card1;
-  card1 = nullptr;
-  delete card2;
-  card2 = nullptr;
+  delete leftCard;
+  leftCard = nullptr;
+  delete rightCard;
+  rightCard = nullptr;
   selectedCard = nullptr;
 }
 
 void Someone::drawCards()
 {
   clearCards();
-  card1 = new Card(getRandomCardId());
-  card2 = new Card(getRandomCardId());
+  leftCard = new Card(getRandomCardId());
+  rightCard = new Card(getRandomCardId());
 }
 
 void Someone::selectCard(Card *card)
@@ -66,14 +66,14 @@ QString Someone::getHealthText()
   return "Health: "+QString::number(health);
 }
 
-Card *Someone::getCard1()
+Card *Someone::getLeftCard()
 {
-  return card1;
+  return leftCard;
 }
 
-Card *Someone::getCard2()
+Card *Someone::getRightCard()
 {
-  return card2;
+  return rightCard;
 }
 
 Card *Someone::getSelectedCard()
@@ -92,8 +92,8 @@ void Player::setDefaultValues()
   this->health        = db->getPlayerHealthValue(player_id);
   this->attack        = db->getPlayerAttackValue(player_id);
   this->name          = db->getPlayerName(player_id);
-  this->card1         = nullptr;
-  this->card2         = nullptr;
+  this->leftCard         = nullptr;
+  this->rightCard         = nullptr;
   this->selectedCard  = nullptr;
 }
 
@@ -109,8 +109,8 @@ void Monster::setDefaultValues()
   this->health  = db->getMonsterHealthValue(monster_id);
   this->attack  = db->getMonsterAttackValue(monster_id);
   this->name    = db->getMonsterName(monster_id);
-  this->card1         = nullptr;
-  this->card2         = nullptr;
+  this->leftCard         = nullptr;
+  this->rightCard         = nullptr;
   this->selectedCard  = nullptr;
 }
 
