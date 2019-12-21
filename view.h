@@ -46,13 +46,16 @@ class View : public QWidget
     bool isPointInPlayerBar(const QPoint &point);
     bool isPointInMonsterBar(const QPoint &point);
 
-    QColor getCardColor(Card *card);
+    QColor  getCardColor(Card *card);
+    QRect   getCardRect(Card *card);
 
     void resetToDefaultColor(QPainter &painter);
 
     void validCardClick(const QPoint &pos);
     bool isPlayerCard(const QPoint &pos);
     bool isMonsterCard(const QPoint &pos);
+
+    void redrawOffsetCard(QPainter &painter);
 
     void updateCardOffset(const QPoint &pos);
     void resetCardOffset();

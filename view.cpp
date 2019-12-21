@@ -156,6 +156,15 @@ QColor View::getCardColor(Card *card)
   return model->isThisCardSelected(card) ? SELECTED_CARD_COLOR : UNSELECTED_CARD_COLOR;
 }
 
+QRect View::getCardRect(Card *card)
+{
+  if ( card == model->getPlayer()->getLeftCard() ) return PLAYER_CARD_LEFT;
+  else if ( card == model->getPlayer()->getRightCard() ) return PLAYER_CARD_RIGHT;
+  else if ( card == model->getMonster()->getLeftCard() ) return MONSTER_CARD_LEFT;
+  else if ( card == model->getMonster()->getRightCard() ) return MONSTER_CARD_RIGHT;
+  else return QRect(0,0,0,0);
+}
+
 void View::resetToDefaultColor(QPainter &painter)
 {
   painter.setPen(OUTLINE_AND_TEXT_COLOR);
@@ -183,6 +192,12 @@ bool View::isMonsterCard(const QPoint &pos)
   if (MONSTER_CARD_LEFT.contains(pos) || MONSTER_CARD_RIGHT.contains(pos))
     return true;
   return false;
+}
+
+void View::redrawOffsetCard(QPainter &painter)
+{
+  if ( cardWithOffset == nullptr ) return;
+  drawCard(painter, getCardRect(cardWithOffset), cardWithOffset);
 }
 
 void View::updateCardOffset(const QPoint &pos)
@@ -233,6 +248,7 @@ void View::paintEvent(QPaintEvent *event)
   drawPlayerElements(painter);
   drawMonsterElements(painter);
   drawNewGame(painter);
+  redrawOffsetCard(painter);
   event->accept();
 }
 
