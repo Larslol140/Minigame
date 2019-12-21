@@ -4,7 +4,7 @@
 moc_*
 *.o
 .qmake.stash
-*.png
+# *.png
 Makefile
 
 # Project

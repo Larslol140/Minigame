@@ -7,6 +7,7 @@ void View::selectPlayerCard(const QPoint &point)
     model->selectLeftPlayerCard();
   else if (isPointInRightPlayerCard(point))
     model->selectRightPlayerCard();
+
 }
 
 void View::selectMonsterCard(const QPoint &point)
@@ -49,6 +50,8 @@ void View::drawPlayerElements(QPainter &painter)
 
 void View::drawCard(QPainter &painter, QRect rect, Card *card)
 {
+  if (card == cardWithOffset)
+    makeOffsetQRect(rect);
   painter.setBrush(getCardColor(card));
   painter.drawPixmap(rect, QPixmap(card->getImgPath()));
   printCardText(painter, rect, card);
@@ -138,6 +141,16 @@ bool View::isPointInRightMonsterCard(const QPoint &point)
   return MONSTER_CARD_RIGHT.contains(point);
 }
 
+bool View::isPointInPlayerBar(const QPoint &point)
+{
+  return PLAYER_STATUS_BAR.contains(point);
+}
+
+bool View::isPointInMonsterBar(const QPoint &point)
+{
+  return MONSTER_STATUS_BAR.contains(point);
+}
+
 QColor View::getCardColor(Card *card)
 {
   return model->isThisCardSelected(card) ? SELECTED_CARD_COLOR : UNSELECTED_CARD_COLOR;
@@ -150,12 +163,11 @@ void View::resetToDefaultColor(QPainter &painter)
 
 void View::validCardClick(const QPoint &pos)
 {
-  if ( isPlayerCard(pos) /* || isMonsterCard(pos) */ )
+  if ( isPointInMonsterBar(pos) )
     playSelectedCards();
   else
   {
-    model->getPlayer()->selectCard(nullptr);
-    model->getMonster()->selectCard(nullptr);
+    unselectAllCards();
   }
 }
 
@@ -173,9 +185,37 @@ bool View::isMonsterCard(const QPoint &pos)
   return false;
 }
 
+void View::updateCardOffset(const QPoint &pos)
+{
+  cardOffsetX = pos.x();
+  cardOffsetY = pos.y();
+}
+
+void View::resetCardOffset()
+{
+  cardOffsetX = 0;
+  cardOffsetY = 0;
+  cardWithOffset = nullptr;
+}
+
+void View::setClickedCardForOffset(const QPoint &pos)
+{
+  if ( isPointInLeftPlayerCard(pos) ) cardWithOffset = model->getPlayer()->getLeftCard();
+  else if ( isPointInRightPlayerCard(pos) ) cardWithOffset = model->getPlayer()->getRightCard();
+  else if ( isPointInLeftMonsterCard(pos) ) cardWithOffset = model->getMonster()->getLeftCard();
+  else if ( isPointInRightMonsterCard(pos) ) cardWithOffset = model->getMonster()->getRightCard();
+  else cardWithOffset = nullptr;
+}
+
+void View::makeOffsetQRect(QRect &rect)
+{
+  rect = QRect(cardOffsetX-(rect.width()/2), cardOffsetY-(rect.height()/2), rect.width(), rect.height());
+}
+
 View::View(QWidget *parent) : QWidget (parent)
 {
   model = Model::getInstance();
+  resetCardOffset();
   this->setFixedSize(840, 780);
   this->show();
 }
@@ -202,18 +242,22 @@ void View::mousePressEvent(QMouseEvent *event)
   if ( isInNewGameRegion(event->pos())) model->restartGame(1, 1);
   selectPlayerCard(event->pos());
   selectMonsterCard(event->pos());
+  setClickedCardForOffset(event->pos());
+  updateCardOffset(event->pos());
   update();
 }
 
 void View::mouseMoveEvent(QMouseEvent *event)
 {
   // TODO: move cards to enemy
-  event->accept();
+  updateCardOffset(event->pos());
+  update();
 }
 
 void View::mouseReleaseEvent(QMouseEvent *event)
 {
   validCardClick(event->pos());
+  resetCardOffset();
   update();
 }
 

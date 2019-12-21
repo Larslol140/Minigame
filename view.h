@@ -11,6 +11,11 @@ class View : public QWidget
   private:
     Model *model;
 
+    int cardOffsetY;
+    int cardOffsetX;
+
+    Card *cardWithOffset;
+
     void selectPlayerCard(const QPoint &point);
     void selectMonsterCard(const QPoint &point);
     void playSelectedCards();
@@ -38,6 +43,9 @@ class View : public QWidget
     bool isPointInLeftMonsterCard(const QPoint &point);
     bool isPointInRightMonsterCard(const QPoint &point);
 
+    bool isPointInPlayerBar(const QPoint &point);
+    bool isPointInMonsterBar(const QPoint &point);
+
     QColor getCardColor(Card *card);
 
     void resetToDefaultColor(QPainter &painter);
@@ -45,6 +53,12 @@ class View : public QWidget
     void validCardClick(const QPoint &pos);
     bool isPlayerCard(const QPoint &pos);
     bool isMonsterCard(const QPoint &pos);
+
+    void updateCardOffset(const QPoint &pos);
+    void resetCardOffset();
+    void setClickedCardForOffset(const QPoint &pos);
+
+    void makeOffsetQRect(QRect &rect);
 
     void unselectAllCards();
 
