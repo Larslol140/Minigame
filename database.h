@@ -38,6 +38,8 @@ class Database
     int         getPlayerCardAmount(int player_id, int card_id);
     int         getMonsterCardAmount(int monster_id, int card_id);
 
+    QString     getCardImgPath(int id);
+
     QString     getPlayerName(int id);
     QString     getMonsterName(int id);
     QString     getCardName(int id);

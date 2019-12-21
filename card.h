@@ -13,6 +13,7 @@ class Card
     int       attack_value;
     int       card_id;
     QString   card_name;
+    QString   img_path;
 
     void setValues();
 
@@ -23,6 +24,7 @@ class Card
     int       getAttackValue() const;
     int       getCardId() const;
     QString   getCardName() const;
+    QString   getImgPath() const;
 
     QString   getAttackText() const;
     QString   getHealText() const;

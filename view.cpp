@@ -50,7 +50,7 @@ void View::drawPlayerElements(QPainter &painter)
 void View::drawCard(QPainter &painter, QRect rect, Card *card)
 {
   painter.setBrush(getCardColor(card));
-  painter.drawRect(rect);
+  painter.drawPixmap(rect, QPixmap(card->getImgPath()));
   printCardText(painter, rect, card);
 }
 
@@ -67,6 +67,7 @@ void View::drawPlayerStatusBar(QPainter &painter, Player *player)
 {
   painter.setBrush(UNSELECTED_CARD_COLOR);
   painter.drawRect(PLAYER_STATUS_BAR);
+  drawPlayerHealthBar(painter, player);
   painter.setPen(HEALTH_COLOR);
   painter.drawText(PLAYER_STATUS_BAR, Qt::AlignCenter, player->getHealthText());
   resetToDefaultColor(painter);
@@ -76,6 +77,7 @@ void View::drawMonsterStatusBar(QPainter &painter, Monster *monster)
 {
   painter.setBrush(UNSELECTED_CARD_COLOR);
   painter.drawRect(MONSTER_STATUS_BAR);
+  drawMonsterHealthBar(painter, monster);
   painter.setPen(HEALTH_COLOR);
   painter.drawText(MONSTER_STATUS_BAR, Qt::AlignCenter, monster->getHealthText());
   resetToDefaultColor(painter);
@@ -85,6 +87,30 @@ void View::drawNewGame(QPainter &painter)
 {
   painter.setBrush(ATTACK_COLOR);
   painter.drawRect(START_NEW_GAME);
+}
+
+void View::drawPlayerHealthBar(QPainter &painter, Player *player)
+{
+  if ( !model->isPlayerAlive() ) painter.setBrush(ATTACK_COLOR);
+  else painter.setBrush(HEALTH_BAR_COLOR);
+  painter.drawRect(getFilledBarRect(PLAYER_STATUS_BAR, player->getHealthValue()));
+  resetToDefaultColor(painter);
+}
+
+void View::drawMonsterHealthBar(QPainter &painter, Monster *monster)
+{
+  if ( !model->isMonsterAlive() ) painter.setBrush(ATTACK_COLOR);
+  else painter.setBrush(HEALTH_BAR_COLOR);
+  painter.drawRect(getFilledBarRect(MONSTER_STATUS_BAR, monster->getHealthValue()));
+  resetToDefaultColor(painter);
+}
+
+QRect View::getFilledBarRect(QRect bar, int health)
+{
+  if ( health > 20 || health <= 0 ) health = 20;
+  QRect tmp(bar);
+  tmp.setWidth((bar.width()/20)*health);
+  return tmp;
 }
 
 bool View::isInNewGameRegion(const QPoint &point)
@@ -150,7 +176,7 @@ bool View::isMonsterCard(const QPoint &pos)
 View::View(QWidget *parent) : QWidget (parent)
 {
   model = Model::getInstance();
-  this->setFixedSize(420, 390);
+  this->setFixedSize(840, 780);
   this->show();
 }
 
@@ -163,6 +189,7 @@ void View::paintEvent(QPaintEvent *event)
 {
   QPainter painter(this);
   painter.setPen(OUTLINE_AND_TEXT_COLOR);
+  painter.setFont(QFont("Open Sans", 20));
   drawPlayerElements(painter);
   drawMonsterElements(painter);
   drawNewGame(painter);

@@ -105,6 +105,11 @@ int Database::getMonsterCardAmount(int monster_id, int card_id)
   return getCardAmount("monster", monster_id, card_id);
 }
 
+QString Database::getCardImgPath(int id)
+{
+  return genericQStringQuery("card", "card_img_path", id);
+}
+
 QString Database::getPlayerName(int id)
 {
   return genericQStringQuery("player", "player_name", id);

@@ -2,6 +2,7 @@
 
 void Card::setValues()
 {
+  this->img_path = db->getCardImgPath(card_id);
   this->attack_value = db->getCardAttackValue(card_id);
   this->heal_value = db->getCardHealValue(card_id);
   this->card_name = db->getCardName(card_id);
@@ -32,6 +33,11 @@ int Card::getCardId() const
 QString Card::getCardName() const
 {
   return card_name;
+}
+
+QString Card::getImgPath() const
+{
+  return img_path;
 }
 
 QString Card::getAttackText() const

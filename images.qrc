@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/src">
+        <file>images/arrow.png</file>
+        <file>images/double_shot.png</file>
+        <file>images/persicion_shot.png</file>
+        <file>images/poisoned_arrow.png</file>
+        <file>images/punch.png</file>
+        <file>images/shield.png</file>
+        <file>images/shield_wall.png</file>
+        <file>images/shot.png</file>
+        <file>images/smoke_bomb.png</file>
+    </qresource>
+</RCC>

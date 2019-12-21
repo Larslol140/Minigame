@@ -17,3 +17,6 @@ SOURCES += \
     model.cpp \
     someone.cpp \
     view.cpp
+
+RESOURCES += \
+    images.qrc

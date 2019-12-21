@@ -100,7 +100,6 @@ void Model::playerTurn()
   {
     attackMonster();
     healPlayer();
-    nextTurn();
   }
   monsterAutoTurn();
 }

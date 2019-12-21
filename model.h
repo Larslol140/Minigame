@@ -14,9 +14,6 @@ class Model : public QObject
     Player  *player;
     Monster *monster;
 
-    bool    isPlayerAlive();
-    bool    isMonsterAlive();
-
     void    nextTurn();
 
     void    attackPlayer();
@@ -44,6 +41,9 @@ class Model : public QObject
     void selectLeftMonsterCard();
     void selectRightMonsterCard();
     void selectNoMonsterCard();
+
+    bool    isPlayerAlive();
+    bool    isMonsterAlive();
 
     Player  *getPlayer();
     Monster *getMonster();

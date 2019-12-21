@@ -24,6 +24,12 @@ class View : public QWidget
     void drawPlayerStatusBar(QPainter &painter, Player *player);
     void drawMonsterStatusBar(QPainter &painter, Monster *monster);
     void drawNewGame(QPainter &painter);
+
+    void drawPlayerHealthBar(QPainter &painter, Player *player);
+    void drawMonsterHealthBar(QPainter &painter, Monster *monster);
+
+    QRect getFilledBarRect(QRect bar, int health);
+
     bool isInNewGameRegion(const QPoint &point);
 
     bool isPointInLeftPlayerCard(const QPoint &point);

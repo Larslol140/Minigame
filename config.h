@@ -19,13 +19,13 @@ const QColor ATTACK_COLOR       = QColor(Qt::red);
 
 const QColor HEALTH_BAR_COLOR   = QColor(Qt::yellow);
 
-const QRect MONSTER_CARD_LEFT   = QRect(10, 40, 100, 150);
-const QRect MONSTER_CARD_RIGHT  = QRect(310, 40, 100, 150);
-const QRect MONSTER_STATUS_BAR  = QRect(10, 10, 400, 20);
-const QRect PLAYER_CARD_LEFT    = QRect(10, 200, 100, 150);
-const QRect PLAYER_CARD_RIGHT   = QRect(310, 200, 100, 150);
-const QRect PLAYER_STATUS_BAR   = QRect(10, 360, 400, 20);
+const QRect MONSTER_CARD_LEFT   = QRect(20, 80, 200, 300);
+const QRect MONSTER_CARD_RIGHT  = QRect(620, 80, 200, 300);
+const QRect MONSTER_STATUS_BAR  = QRect(20, 20, 800, 40);
+const QRect PLAYER_CARD_LEFT    = QRect(20, 400, 200, 300);
+const QRect PLAYER_CARD_RIGHT   = QRect(620, 400, 200, 300);
+const QRect PLAYER_STATUS_BAR   = QRect(20, 720, 800, 40);
 
-const QRect START_NEW_GAME      = QRect(200, 185, 20, 20);
+const QRect START_NEW_GAME      = QRect(400, 375, 40, 40);
 
 #endif // CONFIG_H
