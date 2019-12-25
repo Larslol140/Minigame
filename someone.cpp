@@ -61,6 +61,11 @@ int Someone::getHealthValue()
   return health;
 }
 
+QString Someone::getName()
+{
+  return name;
+}
+
 QString Someone::getHealthText()
 {
   return "Health: "+QString::number(health);

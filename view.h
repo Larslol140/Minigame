@@ -65,6 +65,11 @@ class View : public QWidget
 
     void unselectAllCards();
 
+    QRect relativeToRect(const Pos &p);
+
+    void drawPlayerAvatar(QPainter &painter, QRect rect, Player *player);
+    void drawMonsterAvatar(QPainter &painter, QRect rect, Monster *monster);
+
   public:
     View(QWidget *parent = nullptr);
     ~View();
@@ -74,6 +79,7 @@ class View : public QWidget
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+    void resizeEvent(QResizeEvent *event);
 
   public slots:
     void playerDead();

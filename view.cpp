@@ -25,6 +25,25 @@ void View::unselectAllCards()
   model->getMonster()->selectCard(nullptr);
 }
 
+QRect View::relativeToRect(const Pos &p)
+{
+  return QRect(int(this->width()*p.x), int(this->height()*p.y), int(this->width()*p.w), int(this->height()*p.h));
+}
+
+void View::drawPlayerAvatar(QPainter &painter, QRect rect, Player *player)
+{
+  painter.setBrush(BACKGROUND_COLOR);
+  painter.drawRect(rect);
+  painter.drawText(rect, Qt::AlignCenter, player->getName());
+}
+
+void View::drawMonsterAvatar(QPainter &painter, QRect rect, Monster *monster)
+{
+  painter.setBrush(BACKGROUND_COLOR);
+  painter.drawRect(rect);
+  painter.drawText(rect, Qt::AlignCenter, monster->getName());
+}
+
 void View::playSelectedCards()
 {
   if (model->getPlayer()->isCardSelected())
@@ -37,15 +56,17 @@ void View::playSelectedCards()
 void View::drawMonsterElements(QPainter &painter)
 {
   drawMonsterStatusBar(painter, model->getMonster());
-  drawCard(painter, MONSTER_CARD_LEFT, model->getMonster()->getLeftCard());
-  drawCard(painter, MONSTER_CARD_RIGHT, model->getMonster()->getRightCard());
+  drawCard(painter, relativeToRect(MONSTER_CARD_LEFT), model->getMonster()->getLeftCard());
+  drawCard(painter, relativeToRect(MONSTER_CARD_RIGHT), model->getMonster()->getRightCard());
+  drawMonsterAvatar(painter, relativeToRect(MONSTER_AVATAR_IMG), model->getMonster());
 }
 
 void View::drawPlayerElements(QPainter &painter)
 {
   drawPlayerStatusBar(painter, model->getPlayer());
-  drawCard(painter, PLAYER_CARD_LEFT, model->getPlayer()->getLeftCard());
-  drawCard(painter, PLAYER_CARD_RIGHT, model->getPlayer()->getRightCard());
+  drawCard(painter, relativeToRect(PLAYER_CARD_LEFT), model->getPlayer()->getLeftCard());
+  drawCard(painter, relativeToRect(PLAYER_CARD_RIGHT), model->getPlayer()->getRightCard());
+  drawPlayerAvatar(painter, relativeToRect(PLAYER_AVATAR_IMG), model->getPlayer());
 }
 
 void View::drawCard(QPainter &painter, QRect rect, Card *card)
@@ -69,34 +90,34 @@ void View::printCardText(QPainter &painter, QRect rect, Card *card)
 void View::drawPlayerStatusBar(QPainter &painter, Player *player)
 {
   painter.setBrush(UNSELECTED_CARD_COLOR);
-  painter.drawRect(PLAYER_STATUS_BAR);
+  painter.drawRect(relativeToRect(PLAYER_STATUS_BAR));
   drawPlayerHealthBar(painter, player);
   painter.setPen(HEALTH_COLOR);
-  painter.drawText(PLAYER_STATUS_BAR, Qt::AlignCenter, player->getHealthText());
+  painter.drawText(relativeToRect(PLAYER_STATUS_BAR), Qt::AlignCenter, player->getHealthText());
   resetToDefaultColor(painter);
 }
 
 void View::drawMonsterStatusBar(QPainter &painter, Monster *monster)
 {
   painter.setBrush(UNSELECTED_CARD_COLOR);
-  painter.drawRect(MONSTER_STATUS_BAR);
+  painter.drawRect(relativeToRect(MONSTER_STATUS_BAR));
   drawMonsterHealthBar(painter, monster);
   painter.setPen(HEALTH_COLOR);
-  painter.drawText(MONSTER_STATUS_BAR, Qt::AlignCenter, monster->getHealthText());
+  painter.drawText(relativeToRect(MONSTER_STATUS_BAR), Qt::AlignCenter, monster->getHealthText());
   resetToDefaultColor(painter);
 }
 
 void View::drawNewGame(QPainter &painter)
 {
   painter.setBrush(ATTACK_COLOR);
-  painter.drawRect(START_NEW_GAME);
+  painter.drawRect(relativeToRect(START_NEW_GAME));
 }
 
 void View::drawPlayerHealthBar(QPainter &painter, Player *player)
 {
   if ( !model->isPlayerAlive() ) painter.setBrush(ATTACK_COLOR);
   else painter.setBrush(HEALTH_BAR_COLOR);
-  painter.drawRect(getFilledBarRect(PLAYER_STATUS_BAR, player->getHealthValue()));
+  painter.drawRect(getFilledBarRect(relativeToRect(PLAYER_STATUS_BAR), player->getHealthValue()));
   resetToDefaultColor(painter);
 }
 
@@ -104,7 +125,7 @@ void View::drawMonsterHealthBar(QPainter &painter, Monster *monster)
 {
   if ( !model->isMonsterAlive() ) painter.setBrush(ATTACK_COLOR);
   else painter.setBrush(HEALTH_BAR_COLOR);
-  painter.drawRect(getFilledBarRect(MONSTER_STATUS_BAR, monster->getHealthValue()));
+  painter.drawRect(getFilledBarRect(relativeToRect(MONSTER_STATUS_BAR), monster->getHealthValue()));
   resetToDefaultColor(painter);
 }
 
@@ -112,43 +133,43 @@ QRect View::getFilledBarRect(QRect bar, int health)
 {
   if ( health > 20 || health <= 0 ) health = 20;
   QRect tmp(bar);
-  tmp.setWidth((bar.width()/20)*health);
+  tmp.setWidth(health == 20 ? bar.width() : (bar.width()/20)*health);
   return tmp;
 }
 
 bool View::isInNewGameRegion(const QPoint &point)
 {
-  return START_NEW_GAME.contains(point);
+  return relativeToRect(START_NEW_GAME).contains(point);
 }
 
 bool View::isPointInLeftPlayerCard(const QPoint &point)
 {
-  return PLAYER_CARD_LEFT.contains(point);
+  return relativeToRect(PLAYER_CARD_LEFT).contains(point);
 }
 
 bool View::isPointInRightPlayerCard(const QPoint &point)
 {
-  return PLAYER_CARD_RIGHT.contains(point);
+  return relativeToRect(PLAYER_CARD_RIGHT).contains(point);
 }
 
 bool View::isPointInLeftMonsterCard(const QPoint &point)
 {
-  return MONSTER_CARD_LEFT.contains(point);
+  return relativeToRect(MONSTER_CARD_LEFT).contains(point);
 }
 
 bool View::isPointInRightMonsterCard(const QPoint &point)
 {
-  return MONSTER_CARD_RIGHT.contains(point);
+  return relativeToRect(MONSTER_CARD_RIGHT).contains(point);
 }
 
 bool View::isPointInPlayerBar(const QPoint &point)
 {
-  return PLAYER_STATUS_BAR.contains(point);
+  return relativeToRect(PLAYER_STATUS_BAR).contains(point);
 }
 
 bool View::isPointInMonsterBar(const QPoint &point)
 {
-  return MONSTER_STATUS_BAR.contains(point);
+  return relativeToRect(MONSTER_STATUS_BAR).contains(point);
 }
 
 QColor View::getCardColor(Card *card)
@@ -158,10 +179,10 @@ QColor View::getCardColor(Card *card)
 
 QRect View::getCardRect(Card *card)
 {
-  if ( card == model->getPlayer()->getLeftCard() ) return PLAYER_CARD_LEFT;
-  else if ( card == model->getPlayer()->getRightCard() ) return PLAYER_CARD_RIGHT;
-  else if ( card == model->getMonster()->getLeftCard() ) return MONSTER_CARD_LEFT;
-  else if ( card == model->getMonster()->getRightCard() ) return MONSTER_CARD_RIGHT;
+  if ( card == model->getPlayer()->getLeftCard() ) return relativeToRect(PLAYER_CARD_LEFT);
+  else if ( card == model->getPlayer()->getRightCard() ) return relativeToRect(PLAYER_CARD_RIGHT);
+  else if ( card == model->getMonster()->getLeftCard() ) return relativeToRect(MONSTER_CARD_LEFT);
+  else if ( card == model->getMonster()->getRightCard() ) return relativeToRect(MONSTER_CARD_RIGHT);
   else return QRect(0,0,0,0);
 }
 
@@ -182,14 +203,14 @@ void View::validCardClick(const QPoint &pos)
 
 bool View::isPlayerCard(const QPoint &pos)
 {
-  if (PLAYER_CARD_LEFT.contains(pos) || PLAYER_CARD_RIGHT.contains(pos))
+  if (relativeToRect(PLAYER_CARD_LEFT).contains(pos) || relativeToRect(PLAYER_CARD_RIGHT).contains(pos))
     return true;
   return false;
 }
 
 bool View::isMonsterCard(const QPoint &pos)
 {
-  if (MONSTER_CARD_LEFT.contains(pos) || MONSTER_CARD_RIGHT.contains(pos))
+  if (relativeToRect(MONSTER_CARD_LEFT).contains(pos) || relativeToRect(MONSTER_CARD_RIGHT).contains(pos))
     return true;
   return false;
 }
@@ -231,7 +252,7 @@ View::View(QWidget *parent) : QWidget (parent)
 {
   model = Model::getInstance();
   resetCardOffset();
-  this->setFixedSize(840, 780);
+  this->setGeometry(10, 10, 1280, 720);
   this->show();
 }
 
@@ -244,7 +265,7 @@ void View::paintEvent(QPaintEvent *event)
 {
   QPainter painter(this);
   painter.setPen(OUTLINE_AND_TEXT_COLOR);
-  painter.setFont(QFont("Open Sans", 20));
+  painter.setFont(QFont("Open Sans", int(this->width()*0.0125)));
   drawPlayerElements(painter);
   drawMonsterElements(painter);
   drawNewGame(painter);
@@ -275,6 +296,12 @@ void View::mouseReleaseEvent(QMouseEvent *event)
   validCardClick(event->pos());
   resetCardOffset();
   update();
+}
+
+void View::resizeEvent(QResizeEvent *event)
+{
+  this->setFixedHeight(int(this->width()*0.5625));
+  event->accept();
 }
 
 void View::playerDead()
