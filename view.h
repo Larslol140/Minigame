@@ -70,6 +70,8 @@ class View : public QWidget
     void drawPlayerAvatar(QPainter &painter, QRect rect, Player *player);
     void drawMonsterAvatar(QPainter &painter, QRect rect, Monster *monster);
 
+    bool isPointInUpperHalfOfWindow(const QPoint &pos);
+
   public:
     View(QWidget *parent = nullptr);
     ~View();

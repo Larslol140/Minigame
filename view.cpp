@@ -44,6 +44,11 @@ void View::drawMonsterAvatar(QPainter &painter, QRect rect, Monster *monster)
   painter.drawText(rect, Qt::AlignCenter, monster->getName());
 }
 
+bool View::isPointInUpperHalfOfWindow(const QPoint &pos)
+{
+  return pos.y() < height()/2;
+}
+
 void View::playSelectedCards()
 {
   if (model->getPlayer()->isCardSelected())
@@ -193,7 +198,7 @@ void View::resetToDefaultColor(QPainter &painter)
 
 void View::validCardClick(const QPoint &pos)
 {
-  if ( isPointInMonsterBar(pos) )
+  if ( isPointInUpperHalfOfWindow(pos) ) // alt: isPointInMonsterBar(pos)
     playSelectedCards();
   else
   {
