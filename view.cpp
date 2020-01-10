@@ -243,8 +243,6 @@ void View::setClickedCardForOffset(const QPoint &pos)
 {
   if ( isPointInLeftPlayerCard(pos) ) cardWithOffset = model->getPlayer()->getLeftCard();
   else if ( isPointInRightPlayerCard(pos) ) cardWithOffset = model->getPlayer()->getRightCard();
-  else if ( isPointInLeftMonsterCard(pos) ) cardWithOffset = model->getMonster()->getLeftCard();
-  else if ( isPointInRightMonsterCard(pos) ) cardWithOffset = model->getMonster()->getRightCard();
   else cardWithOffset = nullptr;
 }
 
@@ -283,7 +281,6 @@ void View::mousePressEvent(QMouseEvent *event)
   if ( event->button() != Qt::LeftButton ) return;
   if ( isInNewGameRegion(event->pos())) model->restartGame(1, 1);
   selectPlayerCard(event->pos());
-  selectMonsterCard(event->pos());
   setClickedCardForOffset(event->pos());
   updateCardOffset(event->pos());
   update();
@@ -291,7 +288,6 @@ void View::mousePressEvent(QMouseEvent *event)
 
 void View::mouseMoveEvent(QMouseEvent *event)
 {
-  // TODO: move cards to enemy
   updateCardOffset(event->pos());
   update();
 }
