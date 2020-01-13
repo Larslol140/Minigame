@@ -301,7 +301,9 @@ void View::mouseReleaseEvent(QMouseEvent *event)
 
 void View::resizeEvent(QResizeEvent *event)
 {
+  QPoint l_pos = this->pos();
   this->setFixedHeight(int(this->width()*0.5625));
+  this->setGeometry(l_pos.x(), l_pos.y(), this->width(), this->height());
   event->accept();
 }
 
