@@ -23,6 +23,15 @@ class Model : public QObject
 
     void    monsterAutoTurn();
 
+    Card    *getBestCard();
+
+    bool    areCardsAttackOnly();
+    bool    areCardsHealOnly();
+
+    Card    *getBestAttackCard();
+    Card    *getBestHealCard();
+    Card    *getBestMixedCard();
+
 
   public:
     static Model *getInstance(QObject *parent = nullptr);

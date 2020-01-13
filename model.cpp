@@ -148,11 +148,54 @@ void Model::healMonster()
 
 void Model::monsterAutoTurn()
 {
-  if ( rand() % 1 == 0 )
-    monster->selectCard(monster->getLeftCard());
-  else
-    monster->selectCard(monster->getRightCard());
+  monster->selectCard(getBestCard());
+
   monsterTurn();
+}
+
+Card *Model::getBestCard()
+{
+  if ( areCardsHealOnly() )
+    return getBestHealCard();
+  else if ( areCardsAttackOnly() )
+    return getBestAttackCard();
+  else
+    return getBestMixedCard();
+}
+
+bool Model::areCardsAttackOnly()
+{
+  return monster->getLeftCard()->getAttackValue() > 0 && monster->getRightCard()->getAttackValue() > 0;
+}
+
+bool Model::areCardsHealOnly()
+{
+  return monster->getLeftCard()->getHealValue() > 0 && monster->getRightCard()->getHealValue() > 0;
+}
+
+Card *Model::getBestAttackCard()
+{
+  if ( monster->getLeftCard()->getAttackValue() < monster->getRightCard()->getAttackValue() )
+    return monster->getRightCard();
+  return monster->getLeftCard();
+}
+
+Card *Model::getBestHealCard()
+{
+  if ( monster->getLeftCard()->getHealValue() < monster->getRightCard()->getHealValue() )
+    return monster->getRightCard();
+  return monster->getLeftCard();
+}
+
+Card *Model::getBestMixedCard()
+{
+  if ( player->getHealthValue() - monster->getLeftCard()->getAttackValue() <= 0 )
+    return monster->getLeftCard();
+  else if ( player->getHealthValue() - monster->getRightCard()->getAttackValue() <= 0 )
+    return monster->getRightCard();
+  else if ( monster->getHealthValue() < 10 )
+    return monster->getLeftCard()->getHealValue() ? monster->getLeftCard() : monster->getRightCard();
+  return rand() % 1 == 0 ? monster->getLeftCard() : monster->getRightCard();
 }
 
 bool Model::isGameFinished()
